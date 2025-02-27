@@ -4,22 +4,885 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmer Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
+<style>
+    /* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #388E3C;
+    --accent-color: #8BC34A;
+    --light-color: #F1F8E9;
+    --dark-color: #333;
+    --gray-color: #f5f5f5;
+    --text-color: #2c3e50;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+}
+
+body {
+    background-color: #f9f9f9;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Navigation */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 0 30px;
+    height: 70px;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.logo i {
+    margin-right: 10px;
+    font-size: 1.8rem;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin: 0 15px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--dark-color);
+    font-weight: 500;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a i {
+    margin-right: 8px;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--primary-color);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    margin-bottom: 40px;
+}
+
+.dashboard-header h1 {
+    margin-bottom: 20px;
+    color: var(--dark-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+}
+
+.dashboard-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    flex: 1;
+    min-width: 250px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card i {
+    font-size: 2.5rem;
+    margin-right: 20px;
+    color: var(--primary-color);
+}
+
+.stat-details h3 {
+    color: var(--dark-color);
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.stat-details p {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Form Styling */
+.add-item-section, .items-section {
+    background-color: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.add-item-section h2, .items-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.add-item-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    background-color: #f9f9f9;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(139, 195, 74, 0.2);
+    outline: none;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.add-btn {
+    grid-column: 1 / -1;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-btn i {
+    margin-right: 8px;
+}
+
+.add-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Items Grid */
+.filter-options {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filter-options select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    background-color: white;
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.item-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
+    border: 1px solid #eee;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+}
+
+.item-image {
+    height: 150px;
+    background-color: var(--light-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-image img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.item-details {
+    padding: 15px;
+}
+
+.item-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: var(--dark-color);
+}
+
+.item-category {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.item-price {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.item-stock {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.item-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.item-actions button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-btn {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.item-actions button:hover {
+    opacity: 0.9;
+}
+
+/* Footer */
+footer {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 40px 0 0 0;
+    margin-top: 50px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    padding: 0 20px;
+}
+
+.footer-section h3 {
+    margin-bottom: 20px;
+    color: var(--accent-color);
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section a {
+    color: #ddd;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: var(--accent-color);
+}
+
+.footer-section p {
+    margin-bottom: 10px;
+    color: #ddd;
+}
+
+.footer-section i {
+    margin-right: 10px;
+    color: var(--accent-color);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+    }
+    
+    .logo {
+        margin-bottom: 15px;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+    
+    .nav-links li {
+        margin: 0 10px 10px 10px;
+    }
+    
+    .add-item-form {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-card {
+        min-width: 100%;
+    }
+}
+</style>
 <body>
-    <h1>Farmer Dashboard</h1>
-    <h2>Total Sales: ₹<span id="totalSales">0</span></h2>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-leaf"></i>
+            <span>FarmConnect</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="setting.html"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+        <div class="user-profile">
+            <img src="/api/placeholder/40/40" alt="Farmer Profile">
+            <span>Farmer Name</span>
+        </div>
+    </nav>
 
-    <h3>Add New Vegetable</h3>
-    <input type="text" id="itemName" placeholder="Vegetable Name">
-    <input type="number" id="itemPrice" placeholder="Price (₹)">
-    <button onclick="addItem()">Add Item</button>
+    <div class="container">
+        <header class="dashboard-header">
+            <h1>Farmer Dashboard</h1>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <i class="fas fa-rupee-sign"></i>
+                    <div class="stat-details">
+                        <h3>Total Sales</h3>
+                        <p id="totalSales">₹0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-shopping-basket"></i>
+                    <div class="stat-details">
+                        <h3>Items Listed</h3>
+                        <p id="itemCount">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-details">
+                        <h3>Total Customers</h3>
+                        <p>0</p>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-    <h3>Your Items for Sale</h3>
-    <ul id="farmerItems"></ul>
+        <section class="add-item-section">
+            <h2>Add New Vegetable</h2>
+            <div class="add-item-form">
+                <div class="form-group">
+                    <label for="itemName">Vegetable Name</label>
+                    <input type="text" id="itemName" placeholder="e.g., Tomato, Potato">
+                </div>
+                <div class="form-group">
+                    <label for="itemCategory">Category</label>
+                    <select id="itemCategory">
+                        <option value="vegetable">Vegetable</option>
+                        <option value="fruit">Fruit</option>
+                        <option value="leafy">Leafy Green</option>
+                        <option value="root">Root Vegetable</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="itemPrice">Price (₹)</label>
+                    <input type="number" id="itemPrice" placeholder="Enter price">
+                </div>
+                <div class="form-group">
+                    <label for="itemQuantity">Quantity</label>
+                    <input type="number" id="itemQuantity" placeholder="Enter quantity">
+                </div>
+                <div class="form-group">
+                    <label for="quantityType">Unit</label>
+                    <select id="quantityType">
+                        <option value="kg">Kilogram (kg)</option>
+                        <option value="g">Gram (g)</option>
+                        <option value="dozen">Dozen</option>
+                        <option value="piece">Piece</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="itemDescription">Description</label>
+                    <textarea id="itemDescription" placeholder="Brief description of your produce"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="itemImage">Upload Image</label>
+                    <input type="file" id="itemImage" accept="image/*">
+                </div>
+                <button onclick="addItem()" class="add-btn">
+                    <i class="fas fa-plus"></i> Add Item
+                </button>
+            </div>
+        </section>
 
-    <a href="index.html">Back to Home</a>
+        <section class="items-section">
+            <h2>Your Items for Sale</h2>
+            <div class="filter-options">
+                <select id="filterCategory">
+                    <option value="all">All Categories</option>
+                    <option value="vegetable">Vegetables</option>
+                    <option value="fruit">Fruits</option>
+                    <option value="leafy">Leafy Greens</option>
+                    <option value="root">Root Vegetables</option>
+                </select>
+                <select id="sortBy">
+                    <option value="name">Sort by Name</option>
+                    <option value="price">Sort by Price</option>
+                    <option value="quantity">Sort by Quantity</option>
+                </select>
+            </div>
+            <div id="farmerItems" class="items-grid"></div>
+        </section>
+    </div>
 
-    <script src="script.js"></script>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>FarmConnect</h3>
+                <p>Connecting farmers directly to consumers since 2023</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-phone"></i> +91 12345 67890</p>
+                <p><i class="fas fa-envelope"></i> support@farmconnect.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 FarmConnect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize variables to track data
+let totalSales = 0;
+let items = [];
+let itemId = 0;
+
+// DOM Elements
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if data exists in localStorage
+    loadFromLocalStorage();
+    updateUI();
+});
+
+// Add new item
+function addItem() {
+    const name = document.getElementById('itemName').value;
+    const price = parseFloat(document.getElementById('itemPrice').value);
+    const quantity = parseInt(document.getElementById('itemQuantity').value);
+    const quantityType = document.getElementById('quantityType').value;
+    const category = document.getElementById('itemCategory').value;
+    const description = document.getElementById('itemDescription').value;
+    
+    // Validate input
+    if (!name || isNaN(price) || isNaN(quantity) || price <= 0 || quantity <= 0) {
+        showAlert('Please fill all required fields with valid values', 'error');
+        return;
+    }
+    
+    // Create new item object
+    const newItem = {
+        id: ++itemId,
+        name,
+        price,
+        quantity,
+        quantityType,
+        category,
+        description,
+        dateAdded: new Date().toISOString(),
+        sales: 0
+    };
+    
+    // Add to items array
+    items.push(newItem);
+    
+    // Update UI
+    updateUI();
+    saveToLocalStorage();
+    resetForm();
+    showAlert(`${name} added successfully!`, 'success');
+}
+
+// Update UI elements
+function updateUI() {
+    // Update total sales
+    document.getElementById('totalSales').textContent = totalSales.toLocaleString();
+    
+    // Update item count
+    if (document.getElementById('itemCount')) {
+        document.getElementById('itemCount').textContent = items.length;
+    }
+    
+    // Render items
+    renderItems();
+}
+
+// Render items in the grid
+function renderItems() {
+    const itemsContainer = document.getElementById('farmerItems');
+    itemsContainer.innerHTML = '';
+    
+    if (items.length === 0) {
+        itemsContainer.innerHTML = '<p class="no-items">No items added yet. Add your first item above!</p>';
+        return;
+    }
+    
+    // Get filter and sort values if they exist
+    const filterCategory = document.getElementById('filterCategory')?.value || 'all';
+    const sortBy = document.getElementById('sortBy')?.value || 'name';
+    
+    // Filter items
+    let filteredItems = items;
+    if (filterCategory !== 'all') {
+        filteredItems = items.filter(item => item.category === filterCategory);
+    }
+    
+    // Sort items
+    filteredItems.sort((a, b) => {
+        if (sortBy === 'name') return a.name.localeCompare(b.name);
+        if (sortBy === 'price') return a.price - b.price;
+        if (sortBy === 'quantity') return a.quantity - b.quantity;
+        return 0;
+    });
+    
+    // Create item cards
+    filteredItems.forEach(item => {
+        const itemCard = document.createElement('div');
+        itemCard.className = 'item-card';
+        itemCard.innerHTML = `
+            <div class="item-image">
+                <img src="/api/placeholder/250/150" alt="${item.name}">
+            </div>
+            <div class="item-details">
+                <div class="item-name">${item.name}</div>
+                <div class="item-category">${getCategoryName(item.category)}</div>
+                <div class="item-price">₹${item.price.toFixed(2)}/${item.quantityType}</div>
+                <div class="item-stock">In stock: ${item.quantity} ${item.quantityType}</div>
+                <div class="item-actions">
+                    <button class="edit-btn" onclick="editItem(${item.id})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="delete-btn" onclick="deleteItem(${item.id})">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        `;
+        itemsContainer.appendChild(itemCard);
+    });
+    
+    // Add event listeners for filtering and sorting
+    if (document.getElementById('filterCategory')) {
+        document.getElementById('filterCategory').addEventListener('change', renderItems);
+    }
+    
+    if (document.getElementById('sortBy')) {
+        document.getElementById('sortBy').addEventListener('change', renderItems);
+    }
+}
+
+// Get category display name
+function getCategoryName(category) {
+    const categories = {
+        'vegetable': 'Vegetable',
+        'fruit': 'Fruit',
+        'leafy': 'Leafy Green',
+        'root': 'Root Vegetable'
+    };
+    return categories[category] || category;
+}
+
+// Edit item
+function editItem(id) {
+    const item = items.find(item => item.id === id);
+    if (!item) return;
+    
+    // Populate form with item data
+    document.getElementById('itemName').value = item.name;
+    document.getElementById('itemPrice').value = item.price;
+    document.getElementById('itemQuantity').value = item.quantity;
+    document.getElementById('quantityType').value = item.quantityType;
+    document.getElementById('itemCategory').value = item.category;
+    document.getElementById('itemDescription').value = item.description;
+    
+    // Change button to update
+    const addButton = document.querySelector('.add-btn');
+    addButton.innerHTML = '<i class="fas fa-save"></i> Update Item';
+    addButton.onclick = function() {
+        updateItem(id);
+    };
+    
+    // Scroll to form
+    document.querySelector('.add-item-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Update item
+function updateItem(id) {
+    const name = document.getElementById('itemName').value;
+    const price = parseFloat(document.getElementById('itemPrice').value);
+    const quantity = parseInt(document.getElementById('itemQuantity').value);
+    const quantityType = document.getElementById('quantityType').value;
+    const category = document.getElementById('itemCategory').value;
+    const description = document.getElementById('itemDescription').value;
+    
+    // Validate input
+    if (!name || isNaN(price) || isNaN(quantity) || price <= 0 || quantity <= 0) {
+        showAlert('Please fill all required fields with valid values', 'error');
+        return;
+    }
+    
+    // Find and update item
+    const itemIndex = items.findIndex(item => item.id === id);
+    if (itemIndex !== -1) {
+        items[itemIndex] = {
+            ...items[itemIndex],
+            name,
+            price,
+            quantity,
+            quantityType,
+            category,
+            description
+        };
+        
+        // Update UI
+        updateUI();
+        saveToLocalStorage();
+        resetForm();
+        showAlert(`${name} updated successfully!`, 'success');
+        
+        // Reset button
+        const addButton = document.querySelector('.add-btn');
+        addButton.innerHTML = '<i class="fas fa-plus"></i> Add Item';
+        addButton.onclick = addItem;
+    }
+}
+
+// Delete item
+function deleteItem(id) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        const itemIndex = items.findIndex(item => item.id === id);
+        if (itemIndex !== -1) {
+            const deletedItem = items[itemIndex];
+            items.splice(itemIndex, 1);
+            updateUI();
+            saveToLocalStorage();
+            showAlert(`${deletedItem.name} deleted successfully!`, 'success');
+        }
+    }
+}
+
+// Reset form fields
+function resetForm() {
+    document.getElementById('itemName').value = '';
+    document.getElementById('itemPrice').value = '';
+    document.getElementById('itemQuantity').value = '';
+    document.getElementById('itemDescription').value = '';
+    
+    // Reset file input if it exists
+    if (document.getElementById('itemImage')) {
+        document.getElementById('itemImage').value = '';
+    }
+}
+
+// Save data to localStorage
+function saveToLocalStorage() {
+    localStorage.setItem('farmerItems', JSON.stringify(items));
+    localStorage.setItem('totalSales', totalSales);
+    localStorage.setItem('itemId', itemId);
+}
+
+// Load data from localStorage
+function loadFromLocalStorage() {
+    const savedItems = localStorage.getItem('farmerItems');
+    const savedSales = localStorage.getItem('totalSales');
+    const savedItemId = localStorage.getItem('itemId');
+    
+    if (savedItems) {
+        items = JSON.parse(savedItems);
+    }
+    
+    if (savedSales) {
+        totalSales = parseFloat(savedSales);
+    }
+    
+    if (savedItemId) {
+        itemId = parseInt(savedItemId);
+    }
+}
+
+// Show alert message
+function showAlert(message, type = 'info') {
+    // Create alert element if it doesn't exist
+    let alertElement = document.querySelector('.alert-message');
+    if (!alertElement) {
+        alertElement = document.createElement('div');
+        alertElement.className = 'alert-message';
+        document.body.appendChild(alertElement);
+    }
+    
+    // Set alert content and style
+    alertElement.textContent = message;
+    alertElement.className = `alert-message ${type}`;
+    
+    // Show alert
+    alertElement.style.display = 'block';
+    alertElement.style.opacity = '1';
+    
+    // Hide after 3 seconds
+    setTimeout(() => {
+        alertElement.style.opacity = '0';
+        setTimeout(() => {
+            alertElement.style.display = 'none';
+        }, 300);
+    }, 3000);
+}
+
+// Add this CSS to your style.css file for alerts
+if (!document.querySelector('.alert-styles')) {
+    const alertStyles = document.createElement('style');
+    alertStyles.className = 'alert-styles';
+    alertStyles.textContent = `
+        .alert-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 4px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s;
+        }
+        .alert-message.success {
+            background-color: #4CAF50;
+        }
+        .alert-message.error {
+            background-color: #f44336;
+        }
+        .alert-message.info {
+            background-color: #2196F3;
+        }
+        .no-items {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+    `;
+    document.head.appendChild(alertStyles);
+}
+    </script>
 </body>
 </html>

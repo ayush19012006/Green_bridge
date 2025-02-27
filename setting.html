@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmConnect Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #388E3C;
+            --accent-color: #8BC34A;
+            --light-color: #F1F8E9;
+            --dark-color: #333;
+            --gray-color: #f5f5f5;
+            --text-color: #2c3e50;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 0 30px;
+            height: 70px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links a i {
+            margin-right: 8px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-color);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        /* Settings Styles */
+        .settings-header {
+            margin-bottom: 40px;
+        }
+        
+        .settings-header h1 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+        
+        .settings-header p {
+            color: #666;
+        }
+        
+        .settings-container {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .settings-nav {
+            flex: 0 0 250px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            height: fit-content;
+        }
+        
+        .settings-nav ul {
+            list-style: none;
+        }
+        
+        .settings-nav ul li {
+            margin-bottom: 10px;
+        }
+        
+        .settings-nav ul li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-color);
+            border-radius: var(--border-radius);
+            transition: all 0.3s;
+        }
+        
+        .settings-nav ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .settings-nav ul li a:hover, .settings-nav ul li a.active {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        .settings-content {
+            flex: 1;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+        }
+        
+        .settings-section {
+            display: none;
+        }
+        
+        .settings-section.active {
+            display: block;
+        }
+        
+        .settings-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .settings-section p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: #f9f9f9;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(139, 195, 74, 0.2);
+            outline: none;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .save-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .save-btn i {
+            margin-right: 8px;
+        }
+        
+        .save-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--primary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .notification-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+        }
+        
+        .color-theme {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.active::after {
+            content: "\f00c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            color: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .theme-green {
+            background-color: #4CAF50;
+        }
+        
+        .theme-blue {
+            background-color: #2196F3;
+        }
+        
+        .theme-purple {
+            background-color: #9C27B0;
+        }
+        
+        .theme-orange {
+            background-color: #FF9800;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .social-link i {
+            width: 40px;
+            height: 40px;
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        
+        .connect-btn {
+            margin-left: auto;
+            padding: 8px 15px;
+            background-color: #f5f5f5;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .connect-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .connect-btn.connected {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        .subscription-card {
+            border: 1px solid #eee;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .subscription-card h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .subscription-card .price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .subscription-card ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .subscription-card ul li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .subscription-card ul li i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        .subscription-card .badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background-color: #ff9800;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .select-plan-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .select-plan-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .select-plan-btn.current {
+            background-color: #666;
+        }
+        
+        .language-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+        
+        .payment-method {
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .payment-method img {
+            width: 50px;
+            margin-right: 15px;
+        }
+        
+        .payment-method .method-name {
+            flex: 1;
+        }
+        
+        .payment-method .method-action {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-small {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .btn-edit {
+            background-color: #f5f5f5;
+            color: var(--dark-color);
+        }
+        
+        .btn-remove {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+        
+        .btn-default {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-edit:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-remove:hover {
+            background-color: #ffe0e0;
+        }
+        
+        .banner-design {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .banner-option {
+            border: 2px solid #eee;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .banner-option:hover {
+            transform: translateY(-5px);
+        }
+        
+        .banner-option.active {
+            border-color: var(--primary-color);
+        }
+        
+        .banner-option img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+        }
+        
+        .custom-fields {
+            margin-bottom: 20px;
+        }
+        
+        .custom-field {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .custom-field input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+        
+        .remove-field {
+            background-color: #ffebee;
+            color: #f44336;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .add-field-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 15px;
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .add-field-btn i {
+            margin-right: 8px;
+        }
+        
+        .add-field-btn:hover {
+            background-color: #e8f5e9;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0 0 0;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            padding: 0 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--accent-color);
+        }
+        
+        .footer-section p {
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+        
+        .footer-section i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .settings-container {
+                flex-direction: column;
+            }
+            
+            .settings-nav {
+                flex: 0 0 auto;
+            }
+            
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+            
+            .nav-links li {
+                margin: 0 10px 10px 10px;
+            }
+        }
+        
+        /* Animation for content transitions */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .settings-section.active {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-leaf"></i>
+            <span>FarmConnect</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="farmer.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="#" class="active"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+        <div class="user-profile">
+            <img src="/api/placeholder/40/40" alt="Farmer Profile">
+            <span>Farmer Name</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="settings-header">
+            <h1>Settings</h1>
+            <p>Customize your FarmConnect experience and manage your account preferences</p>
+        </header>
+
+        <div class="settings-container">
+            <div class="settings-nav">
+                <ul>
+                    <li><a href="#" class="active" data-section="account"><i class="fas fa-user"></i> Account</a></li>
+                    <li><a href="#" data-section="shop"><i class="fas fa-store"></i> Shop Settings</a></li>
+                    <li><a href="#" data-section="payment"><i class="fas fa-credit-card"></i> Payment Methods</a></li>
+                    <li><a href="#" data-section="notification"><i class="fas fa-bell"></i> Notifications</a></li>
+                    
+                    <li><a href="#" data-section="subscription"><i class="fas fa-star"></i> Subscription</a></li>
+                    <li><a href="#" data-section="privacy"><i class="fas fa-shield-alt"></i> Privacy & Security</a></li>
+                    <li><a href="#" data-section="support"><i class="fas fa-question-circle"></i> Help & Support</a></li>
+                </ul>
+            </div>
+
+            <div class="settings-content">
+                <!-- Account Settings -->
+                <div class="settings-section active" id="account">
+                    <h2>Account Settings</h2>
+                    <p>Manage your personal information and account details</p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" value="Farmer Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" value="farmer@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" value="+91 98765 43210">
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" value="Delhi, India">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profileImage">Profile Image</label>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <img src="/api/placeholder/80/80" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%;">
+                            <input type="file" id="profileImage" accept="image/*">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" rows="4">Third-generation organic farmer specializing in seasonal vegetables and fruits. Committed to sustainable farming practices since 2005.</textarea>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px 0; color: var(--dark-color);">Change Password</h3>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword">
+                        </div>
+                    </div>
+                    
+                    <button class="save-btn"><i class="fas fa-save"></i> Save Changes</button>
+                </div>
+
+                <!-- Shop Settings -->
+                < class="settings-section" id="shop">
+                    <h2>Shop Settings</h2>
+                    <p>Customize your farm shop appearance and functionality</p>
+                    
+                    <div class="form-group">
+                        <label for="shopName">Shop Name</label>
+                        <input type="text" id="shopName" value="Green Harvest Organics">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shopDescription">Shop Description</label>
+                        <textarea id="shopDescription" rows="4">We grow and sell fresh, organic produce directly from our family farm. Our fruits and vegetables are harvested daily and delivered to you at peak freshness.</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shopLogo">Shop Logo</label>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <img src="/api/placeholder/100/100" alt="Shop Logo" style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain;">
+                            <input type="file" id="shopLogo" accept="image/*">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px 0; color: var(--dark-color);">Shop Banner</h3>
+                    <p>Choose a banner design for your shop homepage</p>
+                    
+                    <div class="banner-design">
+                        <div class="banner-option active">
+                            <img src="/api/placeholder/150/80" alt="Banner 1">
+                        </div>
+                        <div class="banner-option">
+                            <img src="/api/placeholder/150/80" alt="Banner 2">
+                        </div>
+                        <div class="banner-option">
+                            <img src="/api/placeholder/150/80" alt="Banner 3">
+                        </div>
+                        <div class="banner-option">
+                            <img src="/api/placeholder/150/80" alt="Banner 4">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customBanner">Upload Custom Banner</label>
+                        <input type="file" id="customBanner" accept="image/*">
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px 0; color: var(--dark-color);">Custom Product Fields</h3>
+                    <p>Add custom fields to collect additional information for your products</p>
+                    
+                    <div class="custom-fields">
+                        <div class="custom-field">
+                            <input type="text" value="Harvest Date" placeholder="Field name">
+                            <button class="remove-field"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="custom-field">
+                            <input type="text" value="Organic Certification" placeholder="Field name">
+                            <button class="remove-field"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="custom-field">
+                            <input type="text" value="Growing Method" placeholder="Field name">
+                            <button class="remove-field"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                    
+                    <button class="add-field-btn"><i class="fas fa-plus"></i> Add Field</button>
+                    
+                    <h3 style="margin: 30px 0 15px 0; color: var(--dark-color);">Opening Hours</h3>
+                    
+                    <div class="form-group">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div>Day</div>
+                            <div>Open</div>
+                            <div>Close</div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div>Monday</div>
+                            <select><option>9:00 AM</option></select>
+                            <select><option>6:00 PM</option></select>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div>Tuesday</div>
+                            <select><option>9:00 AM</option></select>
+                            <select><option>6:00 PM</option></select>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div>Wednesday</div>
+                            <select><option>9:00 AM</option></select>
+                            <select><option>6:00 PM</option></select>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div>Thursday</div>
+                            <select><option>9:00 AM</option></select>
+                            <select><option>6:00 PM</option></select>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div>Friday</div>
+                            <select><option>9:00 AM</option></select>
+                            <select><option>6:00 PM</option></select>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div>Saturday</div>
+                            <select><option>10:00 AM</option></select>
+                            <select><option>4:00 PM</option></select>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                            <div>Sunday</div>
+                        </div>
+                    </div>
+                </>
+                    <script>
+                        // Wait for the DOM to be fully loaded
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Settings navigation functionality
+                            const navLinks = document.querySelectorAll('.settings-nav ul li a');
+                            const settingsSections = document.querySelectorAll('.settings-section');
+                            
+                            navLinks.forEach(link => {
+                                link.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    
+                                    // Remove active class from all links
+                                    navLinks.forEach(item => item.classList.remove('active'));
+                                    
+                                    // Add active class to clicked link
+                                    this.classList.add('active');
+                                    
+                                    // Get the section to show
+                                    const sectionId = this.getAttribute('data-section');
+                                    
+                                    // Hide all sections
+                                    settingsSections.forEach(section => {
+                                        section.classList.remove('active');
+                                    });
+                                    
+                                    // Show the selected section
+                                    document.getElementById(sectionId).classList.add('active');
+                                });
+                            });
+                            
+                            // Banner option selection
+                            const bannerOptions = document.querySelectorAll('.banner-option');
+                            
+                            bannerOptions.forEach(option => {
+                                option.addEventListener('click', function() {
+                                    // Remove active class from all options
+                                    bannerOptions.forEach(item => item.classList.remove('active'));
+                                    
+                                    // Add active class to clicked option
+                                    this.classList.add('active');
+                                });
+                            });
+                            
+                            // Add custom field functionality
+                            const addFieldBtn = document.querySelector('.add-field-btn');
+                            const customFieldsContainer = document.querySelector('.custom-fields');
+                            
+                            addFieldBtn.addEventListener('click', function() {
+                                const newField = document.createElement('div');
+                                newField.className = 'custom-field';
+                                newField.innerHTML = `
+                                    <input type="text" placeholder="Field name">
+                                    <button class="remove-field"><i class="fas fa-times"></i></button>
+                                `;
+                                
+                                customFieldsContainer.appendChild(newField);
+                                
+                                // Add event listener to the new remove button
+                                newField.querySelector('.remove-field').addEventListener('click', function() {
+                                    newField.remove();
+                                });
+                            });
+                            
+                            // Initialize existing remove field buttons
+                            document.querySelectorAll('.remove-field').forEach(button => {
+                                button.addEventListener('click', function() {
+                                    this.parentElement.remove();
+                                });
+                            });
+                            
+                            // Color theme selection
+                            const colorOptions = document.querySelectorAll('.color-option');
+                            
+                            colorOptions?.forEach(option => {
+                                option.addEventListener('click', function() {
+                                    // Remove active class from all options
+                                    colorOptions.forEach(item => item.classList.remove('active'));
+                                    
+                                    // Add active class to clicked option
+                                    this.classList.add('active');
+                                    
+                                    // Apply color theme (this would be extended in a real application)
+                                    const theme = this.classList[1].split('-')[1];
+                                    console.log(`Theme changed to: ${theme}`);
+                                });
+                            });
+                            
+                            // Save button functionality 
+                            const saveButtons = document.querySelectorAll('.save-btn');
+                            
+                            saveButtons.forEach(button => {
+                                button.addEventListener('click', function() {
+                                    // Show success message
+                                    alert('Your changes have been saved successfully!');
+                                });
+                            });
+                            
+                            // Toggle switch functionality
+                            const toggleSwitches = document.querySelectorAll('.toggle-switch input[type="checkbox"]');
+                            
+                            toggleSwitches?.forEach(toggle => {
+                                toggle.addEventListener('change', function() {
+                                    const settingName = this.getAttribute('data-setting');
+                                    const isEnabled = this.checked;
+                                    console.log(`Setting "${settingName}" is now ${isEnabled ? 'enabled' : 'disabled'}`);
+                                });
+                            });
+                        });
+                    </script>
+                    
+</body>
+</html>                       
+
+                            
