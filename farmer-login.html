@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,6 +64,7 @@
             transform: translateY(40px);
             opacity: 0;
         }
+
         100% {
             transform: translateY(0);
             opacity: 1;
@@ -70,26 +72,57 @@
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 
     @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
     }
 
     @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        75% { transform: translateX(5px); }
+
+        0%,
+        100% {
+            transform: translateX(0);
+        }
+
+        25% {
+            transform: translateX(-5px);
+        }
+
+        75% {
+            transform: translateX(5px);
+        }
     }
 
     @keyframes glowBorder {
-        0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.5); }
-        70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+        0% {
+            box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.5);
+        }
+
+        70% {
+            box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+        }
     }
 
     /* Hover effects */
@@ -172,7 +205,7 @@
         letter-spacing: 0.5px;
         text-transform: uppercase;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         animation: fadeIn 2.2s;
         position: relative;
         overflow: hidden;
@@ -192,7 +225,7 @@
     .btn-success:hover {
         background: linear-gradient(135deg, #218838, #48a461);
         transform: translateY(-3px);
-        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     }
 
     .btn-success:hover:before {
@@ -274,20 +307,22 @@
     .login-logo {
         margin-bottom: 20px;
         animation: pulse 2s infinite ease-in-out;
+
     }
 
-    .login-logo i {
-        font-size: 40px;
-        color: #28a745;
+    .login-logo img {
+        width: 150px;
+        height: auto;
     }
 </style>
+
 <body>
 
     <div class="login-container">
         <div class="overlay"></div>
         <div class="login-box">
             <div class="login-logo">
-                <i class="fas fa-leaf"></i>
+                <img src="img/logo.png" alt="logo">
             </div>
             <h2>Farmer Login</h2>
             <form id="loginForm" action="farmer.html" method="POST">
@@ -301,7 +336,8 @@
                     <span class="input-icon">
                         <i class="fas fa-lock"></i>
                     </span>
-                    <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                    <input type="password" class="form-control" id="password" placeholder="Enter your password"
+                        required>
                     <span class="password-toggle" id="togglePassword">
                         <i class="fas fa-eye-slash"></i>
                     </span>
@@ -319,10 +355,10 @@
 
     <script>
         // Toggle password visibility
-        document.getElementById("togglePassword").addEventListener("click", function() {
+        document.getElementById("togglePassword").addEventListener("click", function () {
             const passwordInput = document.getElementById("password");
             const icon = this.querySelector("i");
-            
+
             if (passwordInput.type === "password") {
                 passwordInput.type = "text";
                 icon.classList.remove("fa-eye-slash");
@@ -333,25 +369,25 @@
                 icon.classList.add("fa-eye-slash");
             }
         });
-        
+
         // Form validation with animation
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
             const email = document.getElementById("email");
             const password = document.getElementById("password");
             let isValid = true;
-            
+
             if (!email.value || !email.validity.valid) {
                 email.classList.add("shake");
                 setTimeout(() => email.classList.remove("shake"), 500);
                 isValid = false;
             }
-            
+
             if (!password.value || password.value.length < 6) {
                 password.classList.add("shake");
                 setTimeout(() => password.classList.remove("shake"), 500);
                 isValid = false;
             }
-            
+
             if (!isValid) {
                 event.preventDefault();
             } else {
@@ -359,13 +395,14 @@
                 document.querySelector(".login-box").style.animation = "pulse 0.5s";
             }
         });
-        
+
         // Add animation when page loads
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const loginBox = document.querySelector(".login-box");
             loginBox.classList.add("animate__animated", "animate__fadeInUp");
         });
     </script>
 
 </body>
+
 </html>
