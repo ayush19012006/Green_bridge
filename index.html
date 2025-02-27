@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmers Market - Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        /* Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap');
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            height: 100vh;
+            color: #fff;
+            background-color: #f8f9fa;
+        }
+
+        /* Home Container */
+        .home-container {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            overflow: hidden;
+            background: url('https://source.unsplash.com/1600x900/?farm,vegetables') no-repeat center center/cover;
+        }
+
+        /* Overlay with parallax effect */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.7) 100%);
+            z-index: 1;
+        }
+
+        /* Content styling */
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        /* Heading styles */
+        .content h1 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* Button styling */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .btn {
+            position: relative;
+            padding: 0.8rem 1.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            width: 100%;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.4);
+            background: linear-gradient(135deg, #218838, #1aa179);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+            color: #212529;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 193, 7, 0.4);
+            background: linear-gradient(135deg, #e0a800, #e76b00);
+        }
+
+        /* Button icons */
+        .btn i {
+            margin-right: 8px;
+        }
+
+        /* Animated elements */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Decorative elements */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            z-index: 1;
+        }
+
+        .circle-1 {
+            width: 150px;
+            height: 150px;
+            top: 10%;
+            left: 10%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .circle-2 {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            right: 15%;
+            animation: float 6s ease-in-out infinite reverse;
+        }
+
+        .circle-3 {
+            width: 120px;
+            height: 120px;
+            bottom: 15%;
+            left: 20%;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        /* Media queries */
+        @media (max-width: 768px) {
+            .content {
+                padding: 1.5rem;
+            }
+            
+            .content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid home-container">
+        <div class="overlay" id="overlay"></div>
+        
+        <!-- Decorative elements -->
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+        
+        <div class="content text-center" id="content">
+            <h1 class="display-4 fw-bold" id="title">Welcome to Farmers Market</h1>
+            <p class="lead" id="subtitle">Buy fresh vegetables directly from farmers.</p>
+            
+            <div class="btn-container" id="buttons">
+                <a href="farmer-login.html" class="btn btn-success btn-lg">
+                    <i class="fas fa-tractor"></i> Login as Farmer
+                </a>
+                <a href="consumer.html" class="btn btn-warning btn-lg">
+                    <i class="fas fa-shopping-basket"></i> Login as Consumer
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements to animate
+            const content = document.getElementById('content');
+            const title = document.getElementById('title');
+            const subtitle = document.getElementById('subtitle');
+            const buttons = document.getElementById('buttons');
+            const overlay = document.getElementById('overlay');
+            
+            // Parallax effect
+            document.addEventListener('mousemove', function(e) {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                overlay.style.transform = `translate(${x * -20}px, ${y * -20}px)`;
+                content.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+            });
+            
+            // Initial animations
+            setTimeout(() => {
+                content.style.transform = 'translateY(0)';
+                content.style.opacity = '1';
+                content.style.transition = 'all 1s ease-out';
+                
+                setTimeout(() => {
+                    title.style.transform = 'translateY(0)';
+                    title.style.opacity = '1';
+                    title.style.transition = 'all 0.8s ease-out';
+                    
+                    setTimeout(() => {
+                        subtitle.style.transform = 'translateY(0)';
+                        subtitle.style.opacity = '1';
+                        subtitle.style.transition = 'all 0.8s ease-out';
+                        
+                        setTimeout(() => {
+                            buttons.style.transform = 'translateY(0)';
+                            buttons.style.opacity = '1';
+                            buttons.style.transition = 'all 0.8s ease-out';
+                        }, 200);
+                    }, 200);
+                }, 200);
+            }, 300);
+            
+            // Add floating animation to buttons on hover
+            const btnElements = document.querySelectorAll('.btn');
+            btnElements.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.classList.add('floating');
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    this.classList.remove('floating');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

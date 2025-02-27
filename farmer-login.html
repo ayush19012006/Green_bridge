@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<style>
+    /* Apply Google Font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Full-screen background with an overlay */
+    .login-container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        background: url('https://source.unsplash.com/1600x900/?farm,agriculture') no-repeat center center/cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+    }
+
+    /* Dark overlay with gradient */
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
+    }
+
+    /* Login Box */
+    .login-box {
+        position: relative;
+        z-index: 1;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 35px 40px;
+        border-radius: 15px;
+        box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.3);
+        width: 380px;
+        max-width: 90%;
+        transform-origin: center;
+        animation: fadeIn 1s ease-out, floatIn 1.2s ease-out;
+    }
+
+    /* Animation keyframes */
+    @keyframes floatIn {
+        0% {
+            transform: translateY(40px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+
+    @keyframes glowBorder {
+        0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.5); }
+        70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+    }
+
+    /* Hover effects */
+    .login-box:hover {
+        box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.4);
+        transition: box-shadow 0.3s ease;
+    }
+
+    /* Heading styles */
+    .login-box h2 {
+        font-weight: 700;
+        margin-bottom: 25px;
+        color: #218838;
+        position: relative;
+        padding-bottom: 10px;
+        animation: fadeIn 1.5s;
+    }
+
+    .login-box h2:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(to right, #218838, #5cb85c);
+        border-radius: 3px;
+    }
+
+    /* Form styles */
+    .form-label {
+        font-weight: 500;
+        color: #333;
+        text-align: left;
+        display: block;
+        margin-bottom: 5px;
+        animation: fadeIn 1.8s;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 20px;
+        animation: fadeIn 2s;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 12px 15px 12px 40px;
+        border: 1px solid #ddd;
+        transition: all 0.3s;
+        font-size: 15px;
+        background-color: #f8f9fa;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #28a745;
+        font-size: 16px;
+        z-index: 10;
+    }
+
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
+        background-color: white;
+        animation: glowBorder 1.5s infinite;
+    }
+
+    .btn-success {
+        padding: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #28a745, #5cb85c);
+        border: none;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        animation: fadeIn 2.2s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-success:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, #218838, #48a461);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn-success:hover:before {
+        width: 100%;
+    }
+
+    .btn-success:active {
+        transform: translateY(0);
+    }
+
+    /* Additional elements */
+    .login-footer {
+        margin-top: 25px;
+        animation: fadeIn 2.5s;
+    }
+
+    p {
+        color: #555;
+        margin-bottom: 0;
+    }
+
+    p a {
+        text-decoration: none;
+        color: #28a745;
+        font-weight: 600;
+        transition: all 0.3s;
+        position: relative;
+    }
+
+    p a:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: #28a745;
+        transition: width 0.3s;
+    }
+
+    p a:hover {
+        color: #218838;
+    }
+
+    p a:hover:after {
+        width: 100%;
+    }
+
+    /* Password toggle */
+    .password-toggle {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        cursor: pointer;
+        z-index: 10;
+        transition: color 0.3s;
+    }
+
+    .password-toggle:hover {
+        color: #28a745;
+    }
+
+    /* Validation shake animation */
+    .shake {
+        animation: shake 0.5s;
+    }
+
+    /* Forgot password link */
+    .forgot-password {
+        text-align: right;
+        font-size: 0.85rem;
+        margin-top: -10px;
+        margin-bottom: 15px;
+    }
+
+    /* Logo section */
+    .login-logo {
+        margin-bottom: 20px;
+        animation: pulse 2s infinite ease-in-out;
+    }
+
+    .login-logo i {
+        font-size: 40px;
+        color: #28a745;
+    }
+</style>
+<body>
+
+    <div class="login-container">
+        <div class="overlay"></div>
+        <div class="login-box">
+            <div class="login-logo">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <h2>Farmer Login</h2>
+            <form id="loginForm" action="farmer.html" method="POST">
+                <div class="input-group">
+                    <span class="input-icon">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                    <span class="password-toggle" id="togglePassword">
+                        <i class="fas fa-eye-slash"></i>
+                    </span>
+                </div>
+                <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn btn-success w-100"><a href="farmer.html"></a>Login</button>
+            </form>
+            <div class="login-footer">
+                <p>Don't have an account? <a href="farmer-register.html">Register here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        document.getElementById("togglePassword").addEventListener("click", function() {
+            const passwordInput = document.getElementById("password");
+            const icon = this.querySelector("i");
+            
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            }
+        });
+        
+        // Form validation with animation
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            const email = document.getElementById("email");
+            const password = document.getElementById("password");
+            let isValid = true;
+            
+            if (!email.value || !email.validity.valid) {
+                email.classList.add("shake");
+                setTimeout(() => email.classList.remove("shake"), 500);
+                isValid = false;
+            }
+            
+            if (!password.value || password.value.length < 6) {
+                password.classList.add("shake");
+                setTimeout(() => password.classList.remove("shake"), 500);
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                event.preventDefault();
+            } else {
+                // Success animation before submit
+                document.querySelector(".login-box").style.animation = "pulse 0.5s";
+            }
+        });
+        
+        // Add animation when page loads
+        document.addEventListener("DOMContentLoaded", function() {
+            const loginBox = document.querySelector(".login-box");
+            loginBox.classList.add("animate__animated", "animate__fadeInUp");
+        });
+    </script>
+
+</body>
+</html>
